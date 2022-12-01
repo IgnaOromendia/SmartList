@@ -1,5 +1,5 @@
-TAD Product ES Tupla⟨name: String, amount: Nat⟩
-TAD List ES Tupla⟨id: String, list: conj(Product)⟩
+TAD Product ES Tupla⟨name: String, amount: Nat, pirce: Nat⟩
+TAD List ES Tupla⟨id: String, price: Nat, list: conj(Product)⟩
 
 TAD SmartList
 	Igualdad Observacional:();
@@ -12,7 +12,7 @@ TAD SmartList
 		buyList: string id x sl -> list			{id ∈ conj(buyLists(sl)) ^ id ∉ conj(houseLists(sl))}
 		houseLists: string sl -> conj(list)
 		houseList: string id x sl -> list		{id ∉ conj(buyLists(sl)) ^ id ∈ conj(houseLists(sl))}
-		
+		price: string id x sl -> list		{id ∈ conj(buyLists(sl)) V id ∈ conj(houseLists(sl))}
 	Generadores:
 		
 	Otras Operaciones:
