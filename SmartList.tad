@@ -1,0 +1,22 @@
+TAD Product ES Tupla⟨name: String, amount: Nat⟩
+TAD List ES Tupla⟨id: String, list: conj(Product)⟩
+
+TAD SmartList
+	Igualdad Observacional:();
+	Géneros: sl
+	Exporta: sl, observadores, generadores, 
+	Usa: Bool, Nat
+	
+	Observadores Básicos:
+		buyLists: sl -> conj(list)
+		buyList: string id x sl -> list			{id ∈ conj(buyLists(sl)) ^ id ∉ conj(houseLists(sl))}
+		houseLists: string sl -> conj(list)
+		houseList: string id x sl -> list		{id ∉ conj(buyLists(sl)) ^ id ∈ conj(houseLists(sl))}
+		
+	Generadores:
+		
+	Otras Operaciones:
+		productInHouse: product p x conj(list) -> bool
+	Axiomas:
+		
+Fin TAD
