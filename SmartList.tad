@@ -12,7 +12,7 @@ TAD SmartList
 		buyList: string id x sl -> secu(product) 		{id ∈ claves(buyLists(sl))}
 		homeLists: sl -> dicc(string,secu(product))
 		homeList: string id x sl -> secu(product)		{id ∈ claves(homeLists(sl))}
-		listPrice: string id x sl -> nat 				{id ∈ claves(homeLists(sl))}
+		listPrice: string id x sl -> nat 				{id ∈ claves(buyLists(sl))}
 	Generadores:
 		newSession: -> sl
 		newList: string id x string t x sl -> sl		{(t = "buy" ∧ id ∉ claves(buyList(sl))) ∨ (t = "home" ∧ id ∉ claves(homeLists(sl)))}
