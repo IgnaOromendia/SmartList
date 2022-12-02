@@ -1,0 +1,50 @@
+TAD Product ES Tupla⟨name: String, amount: Nat, pirce: Nat⟩
+
+Representación:
+	sl se representa con estr donde 
+		estr es tupla ⟨	homeLists: diccHash(id,⟨list: conjTrie(Product), price: nat⟩), // otra posibilidad podria ser un spalytree
+						buyLists: diccHash(id,⟨list: conjTrie(Product), price: nat⟩),⟩
+
+Solución Informal:
+	- e.arg₀ + 1 debe ser ...
+	- si e.arg₁ ...
+---
+Invariante de Representación:
+	Rep:	estr	->	boolean
+	(∀e: estr) Rep(e)	≡ true ⇐⇒ (1)∧(2)
+		donde: 
+		(1)	≡	e.arg₀ > ...
+		(2)	≡	(∀n: nat)(e.arg₁ < ...)
+---
+Función de abstracción:
+	Abs:	estr	->	sl	{Rep(e)}
+	(∀e: estr) Abs(e) =obs td: sl | (1)∧(2)
+		donde: 
+		(1)	≡	obs₁(td) = ...
+		(2)	≡	obs₂(td) = ...
+---
+Interfaz:
+	Parámetros formales:
+		Géneros:	α
+		Función:
+			Copiar(in a:α) -> res: α
+			Pre ≡ {true}
+			Post ≡ {res = a} 
+			Complejidad: Θ(copy(a))
+			Descripción: Función copia de α's.
+			---
+	Se explica con:	TipoDato
+	Géneros:		sl
+	
+	Operaciones básicas:
+		NuevaOp(in n: nat)	-> res: tipoDato
+		Pre ≡ {true}
+		Post ≡ {res =obs ...}
+		Complejidad: Θ(1)
+		Descripción: Genera ...
+		Aliasing: No presenta aspectos de aliasing.
+		---		
+	Algoritmos del módulo:
+		iNuevaOp(in n: nat) -> res: estr
+			res ← ⟨0, 9⟩	// Ejemplo
+		---
