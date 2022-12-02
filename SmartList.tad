@@ -8,19 +8,57 @@ TAD SmartList
 	Usa: Bool, Nat
 	
 	Observadores Básicos:
-		buyLists: sl -> conj(list)
-		buyList: string id x sl -> list			{id ∈ conj(buyLists(sl)) ∧ id ∉ conj(houseLists(sl))}
-		houseLists: string sl -> conj(list)
-		houseList: string id x sl -> list		{id ∉ conj(buyLists(sl)) ∧ id ∈ conj(houseLists(sl))}
-		price: string id x sl -> list		{id ∈ conj(buyLists(sl)) ∨ id ∈ conj(houseLists(sl))}
+		buyLists: sl -> dicc(string,secu(product))
+		buyList: string id x sl -> secu(product) 		{id ∈ claves(buyLists(sl))}
+		homeLists: sl -> dicc(string,secu(product))
+		homeList: string id x sl -> secu(product)		{id ∈ claves(homeLists(sl))}
+		listPrice: string id x sl -> nat 				{id ∈ claves(homeLists(sl))}
 	Generadores:
 		newSession: -> sl
-		addProduct: product p x string id x sl -> sl { id ∈ conj(buyList(sl)) ∨ id ∈ conj(houseLists(sl))}
-		buyProduct: product p x string id x sl -> sl { id ∈ conj(buyList(sl)) ∧L p ∈ π3(buyList(id,sl)) }
+		addProduct: product x string id x sl -> sl 		{id ∈ claves(homeLists(sl)) ∨ id ∈ claves(buyLists(sl))}
+		buyProduct: product x string id x sl -> sl 		{id ∈ claves(buyLists(sl))}
 	Otras Operaciones:
-		productInHouse: product p x conj(list) -> bool
+		removeProduct: product x secu(product) -> secu(product)
+		addProduct: product x secu(product) -> secu(product)
 	Axiomas:
-		buyList(newSession()) ≡ ø
-		buyList(id1,addProduct(p,id2,sl)) ≡ if id1 = id2 then Ag else sino fi
+		buyLists(newSession()) ≡ vacio
+		buyLists(addProduct(p,id2,sl)) ≡ buyLists(sl)
+		buyLists(buyProduct(p,id2,sl)) ≡ buyLists(sl)
+	
+		buyList(id1,addProduct(p,id2,sl)) ≡ if id1 = id2 then p • buyList(id1,sl) else buyList(id1,sl) fi
+		buyList(id1,buyProduct(p,id2,sl)) ≡ if id1 = id2 then removeProduct(p,buyList(id1,sl)) else buyList(id1,sl) fi
+		
+		homeLists(newSession()) ≡ vacio
+		homeLists(addProduct(p,id2,sl)) ≡ homeLists(sl)
+		homeLists(buyProduct(p,id2,sl)) ≡ homeLists(sl)
+		
+		homeList(id1,addProduct(p,id2,sl)) ≡ if id1 = id2 then addProduct(p,homeList(id1,sl)) else homeList(id1,sl) fi
+		homeList(id1,buyProduct(p,id2,sl)) ≡ if id1 = id2 then addProduct(p,homeList(id1,sl)) else homeList(id1,sl) fi
+		
+		listPrice(id1,addProduct(p,id2,sl)) ≡ if id1 = id2 then listPrice(id1,sl) + π3(p) else listPrice(id1,sl) fi
+		listPrice(id1,buyProduct(p,id2,sl)) ≡ listPrice(id1,sl)
+		
+		// Otras operacines
+		
+		removeProduct(p,s) ≡ if vacía?(s) 
+								then <>
+								else if π1(prim(s)) = π1(p) 
+										then if π3(prim(s)) = π3(p) 
+												then removeProduct(p,fin(s)) 
+												else ⟨ π1(p), π2(p), π3(prim(s)) - π3(p)⟩ • removeProduct(p,fin(s)) fi
+										else prim(s) • removeProduct(p,fin(s)) fi
+							 fi
+							 
+		 addProduct(p,s) ≡ if está?(p,s) 
+		 					then if vacía?(s) 
+									then <>
+									else if π1(prim(s)) = π1(p) 
+											then ⟨ π1(p), π2(p), π3(prim(s)) + π3(p)⟩ • addProduct(p,fin(s))
+											else prim(s) • addProduct(p,fin(s)) fi
+								 fi	 
+							else p • s
+						   fi
+		 									 
+		
 		
 Fin TAD
