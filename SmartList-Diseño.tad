@@ -2,26 +2,24 @@ TAD Product ES Tupla⟨name: String, amount: Nat, pirce: Nat⟩
 
 Representación:
 	sl se representa con estr donde 
-		estr es tupla ⟨	homeLists: diccHash(id,⟨list: conjTrie(Product), price: nat⟩), // otra posibilidad podria ser un spalytree
-						buyLists: diccHash(id,⟨list: conjTrie(Product), price: nat⟩),⟩
-
-Solución Informal:
-	- e.arg₀ + 1 debe ser ...
-	- si e.arg₁ ...
+		estr es tupla ⟨	homeLists: diccHash(string,⟨list: conjHash(Product), price: nat⟩), // otra posibilidad podria ser un spalytree
+						buyLists: diccHash(string,⟨list: conjHash(Product), price: nat⟩)⟩ 
 ---
 Invariante de Representación:
 	Rep:	estr	->	boolean
-	(∀e: estr) Rep(e)	≡ true ⇐⇒ (1)∧(2)
+	(∀e: estr) Rep(e)	≡ true ⇐⇒ (1)
 		donde: 
-		(1)	≡	e.arg₀ > ...
-		(2)	≡	(∀n: nat)(e.arg₁ < ...)
+		(1)	≡	claves(e.homeLists) ∩ claves(e.buyLists) = ø
 ---
 Función de abstracción:
 	Abs:	estr	->	sl	{Rep(e)}
-	(∀e: estr) Abs(e) =obs td: sl | (1)∧(2)
+	(∀e: estr) Abs(e) =obs sl: sl | (1)∧(2)∧(3)∧(4)∧(5)
 		donde: 
-		(1)	≡	obs₁(td) = ...
-		(2)	≡	obs₂(td) = ...
+		(1)	≡	buyLists(sl) = sl.buyLists
+		(2)	≡	homeLists(sl) = sl.homeLists
+		(3) ≡ 	buyList(id,sl) = obtener(id,sl.buyLists).list
+		(4) ≡ 	homeList(id,sl) = obtener(id,sl.homeList).list
+		(5) ≡ 	listPrice(id,sl) = obtener(id,sl.buyLists).price
 ---
 Interfaz:
 	Parámetros formales:
@@ -37,14 +35,55 @@ Interfaz:
 	Géneros:		sl
 	
 	Operaciones básicas:
-		NuevaOp(in n: nat)	-> res: tipoDato
+		buyLists(in sl: sl)	-> res: dicc(string,⟨list: conj(Product), price: nat⟩)
 		Pre ≡ {true}
-		Post ≡ {res =obs ...}
+		Post ≡ {res =obs buyLists(sl)}
 		Complejidad: Θ(1)
-		Descripción: Genera ...
+		Descripción: Devuelve todas las listas para comprar
 		Aliasing: No presenta aspectos de aliasing.
 		---		
+		homeLists(in sl: sl) -> res: dicc(string,⟨list: conj(Product), price: nat⟩)
+		Pre ≡ {true}
+		Post ≡ {res =obs homeLists(sl)}
+		Complejidad: Θ(1)
+		Descripción: Devuelve todas las listas que contiene los productos que hay en casa
+		Aliasing: No presenta aspectos de aliasing.
+		---		
+		buyList(in id: string, in sl: sl) -> res: conj(Product)
+		Pre ≡ {id ∈ claves(sl.buyLists)}
+		Post ≡ {res =obs buyList(id,sl)}
+		Complejidad: Θ(1)
+		Descripción: Devuelve la lista buscada.
+		Aliasing: No presenta aspectos de aliasing.
+		---	
+		homeList(in id: string, in sl: sl) -> res: conj(Product)
+		Pre ≡ {id ∈ claves(sl.homeLists)}
+		Post ≡ {res =obs homeList(id,sl)}
+		Complejidad: Θ(1)
+		Descripción: Devuelve la lista buscada.
+		Aliasing: No presenta aspectos de aliasing.
+		---	
+		listPrice(in id: string, in sl: sl) -> res: nat
+		Pre ≡ {id ∈ claves(sl.buyLists)}
+		Post ≡ {res =obs listPrice(id,sl)}
+		Complejidad: Θ(1)
+		Descripción: Devuelve el precio de la lista buscada.
+		Aliasing: No presenta aspectos de aliasing.
+		---			
 	Algoritmos del módulo:
-		iNuevaOp(in n: nat) -> res: estr
-			res ← ⟨0, 9⟩	// Ejemplo
+		iBuyLists(in sl: sl) -> res: dicc(string,⟨list: conj(Product), price: nat⟩)
+			res ← sl.buyLists
 		---
+		iHomeLists(in sl: sl) -> res: dicc(string,⟨list: conj(Product), price: nat⟩)
+			res ← sl.homeLists
+		---
+		iBuyList(in id: string, in sl:sl) -> res: conj(Product) 
+			res ← significado(id,sl.buyLists).list
+		---
+		iHomeList(in id: string, in sl:sl) -> res: conj(Product) 
+			res ← significado(id,sl.homeLists).list
+		---
+		ilistPrice(in id: string, in sl:sl) -> res: nat
+			res ← significado(id,sl.homeLists).price
+		---
+		
