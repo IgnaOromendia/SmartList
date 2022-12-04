@@ -2,8 +2,8 @@ TAD Product ES Tupla⟨name: String, amount: Nat, pirce: Nat⟩
 
 Representación:
 	sl se representa con estr donde 
-		estr es tupla ⟨	homeLists: diccHash(string,⟨list: conjHash(Product), price: nat⟩), // otra posibilidad podria ser un spalytree
-						buyLists: diccHash(string,⟨list: conjHash(Product), price: nat⟩)⟩ 
+		estr es tupla ⟨	homeLists: diccHash(string,⟨list: diccHash(string,Product), price: nat⟩), // otra posibilidad podria ser un spalytree
+						buyLists: diccHash(string,⟨list: diccHash(string,Product), price: nat⟩)⟩ // la clave del segundo dic son los nombres de los prodctos
 ---
 Invariante de Representación:
 	Rep:	estr	->	boolean
@@ -40,34 +40,62 @@ Interfaz:
 		Post ≡ {res =obs buyLists(sl)}
 		Complejidad: Θ(1)
 		Descripción: Devuelve todas las listas para comprar
-		Aliasing: No presenta aspectos de aliasing.
+		Aliasing: Devuelve una referencia no modificable
 		---		
 		homeLists(in sl: sl) -> res: dicc(string,⟨list: conj(Product), price: nat⟩)
 		Pre ≡ {true}
 		Post ≡ {res =obs homeLists(sl)}
 		Complejidad: Θ(1)
 		Descripción: Devuelve todas las listas que contiene los productos que hay en casa
-		Aliasing: No presenta aspectos de aliasing.
+		Aliasing: Devuelve una referencia no modificable
 		---		
 		buyList(in id: string, in sl: sl) -> res: conj(Product)
 		Pre ≡ {id ∈ claves(sl.buyLists)}
 		Post ≡ {res =obs buyList(id,sl)}
 		Complejidad: Θ(1)
 		Descripción: Devuelve la lista buscada.
-		Aliasing: No presenta aspectos de aliasing.
+		Aliasing: Devuelve una referencia no modificable
 		---	
 		homeList(in id: string, in sl: sl) -> res: conj(Product)
 		Pre ≡ {id ∈ claves(sl.homeLists)}
 		Post ≡ {res =obs homeList(id,sl)}
 		Complejidad: Θ(1)
 		Descripción: Devuelve la lista buscada.
-		Aliasing: No presenta aspectos de aliasing.
+		Aliasing: Devuelve una referencia no modificable
 		---	
 		listPrice(in id: string, in sl: sl) -> res: nat
 		Pre ≡ {id ∈ claves(sl.buyLists)}
 		Post ≡ {res =obs listPrice(id,sl)}
 		Complejidad: Θ(1)
 		Descripción: Devuelve el precio de la lista buscada.
+		Aliasing: Devuelve una referencia no modificable
+		---			
+		newSession() -> res: sl
+		Pre ≡ {True}
+		Post ≡ {res =obs newSession()}
+		Complejidad: Θ(1)
+		Descripción: Genera una nueva sesión de la app
+		Aliasing: No presenta aspectos de aliasing.
+		---		
+		newList(in id: string, in t:string, inout sl:sl)
+		Pre ≡ {(t = "buy" ∧ id ∉ claves(sl.buyList) ∨ (t = "home" ∧ id ∉ claves(sl.homeLists)}
+		Post ≡ {res =obs newList(id,t,sl)}
+		Complejidad: Θ(1)
+		Descripción: Genera una nueva lista y la agrega donde corresponda.
+		Aliasing: No presenta aspectos de aliasing.
+		---	
+		newProduct(in p: product, in id:string, inout sl:sl)
+		Pre ≡ {id ∈ claves(sl.homeLists) ∨ id ∈ claves(sl.buyLists}
+		Post ≡ {res =obs addProduct(p,id,sl)}
+		Complejidad: Θ(1)
+		Descripción: Agrega un producto a la lista correspondiente
+		Aliasing: No presenta aspectos de aliasing.
+		---		
+		buyProduct(in p: product, in id:string, inout sl:sl)
+		Pre ≡ {id ∈ claves(sl.buyLists}
+		Post ≡ {res =obs buyProduct(p,id,sl)}
+		Complejidad: Θ(1)
+		Descripción: Agrega un producto a la lista correspondiente
 		Aliasing: No presenta aspectos de aliasing.
 		---			
 	Algoritmos del módulo:
@@ -83,7 +111,57 @@ Interfaz:
 		iHomeList(in id: string, in sl:sl) -> res: conj(Product) 
 			res ← significado(id,sl.homeLists).list
 		---
-		ilistPrice(in id: string, in sl:sl) -> res: nat
+		iListPrice(in id: string, in sl:sl) -> res: nat
 			res ← significado(id,sl.homeLists).price
 		---
+		iNewSession() -> res: sl
+			res.homeLists ← vacio()
+			res.buyLists ← vacio()
+		---
+		iNewList(in id: string, in t:string, in sl:sl)
+			if (t = "buy" ∧ def?(id,sl.buyLists) = False) then
+				definir(id,vacia(),sl.buyLists)
+			else if (t = "home" ∧ def?(id,sl.homeLists) = False) then
+				definir(id,vacia(),sl.homeLists)
+			fi
+		---
+		iNewProduct(in p: product, in id:string, inout sl:sl)
+			// Aca todo se pasa por referencia asi que no hay que volver a definir 
+			// en el de la estructura, a menos que sea algo nuevo
+			dicc(string,product) list ← vacio()
+			
+			if (def?(id,sl.buyLists)) then
+				list ← obtener(id,sl.buyLists)
+			else if (def?(id,sl.homeLists)) then
+				list ← obtener(id,sl.homeLists)
+			fi 
+			
+			if (def?(p.name,list)) then
+				product prod ← obtener(p.name,list)
+				prod.amount += p.amount
+				definir(prod.name,p,list)
+			else
+				definir(p.name,p,list)
+			fi
+		---
+		iBuyProduct(in p: product, in id:string, inout sl:sl)
+			dicc(string,product) list ← obtener(id,sl.buyLists)
+			product prod ← obtener(p.name,list)
+			prod.amount -= p.amount
+			
+			if prod.amount = 0 then
+				eliminar(p.name,list)
+			else
+				definir(prod.name,prod,list)
+			fi
+			
+			list ← obtener(id,sl.homeLists)
+			if (def?(p.name,list)) then
+				prod ← obtener(p.name,list)
+				prod.amount += p.amount
+				definir(prod.name,p,list)
+			else
+				definir(p.name,p,list)
+		---
+		
 		
