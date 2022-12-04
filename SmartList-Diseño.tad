@@ -3,7 +3,8 @@ TAD Product ES Tupla⟨name: String, amount: Nat, pirce: Nat⟩
 Representación:
 	sl se representa con estr donde 
 		estr es tupla ⟨	homeLists: diccHash(string,⟨list: diccHash(string,Product), price: nat⟩), // otra posibilidad podria ser un spalytree
-						buyLists: diccHash(string,⟨list: diccHash(string,Product), price: nat⟩)⟩ // la clave del segundo dic son los nombres de los prodctos
+						buyLists: diccHash(string,⟨list: diccHash(string,Product), price: nat⟩),  // la clave del segundo dic son los nombres de los prodctos
+						urgentes: conjHash(string)
 ---
 Invariante de Representación:
 	Rep:	estr	->	boolean
@@ -69,7 +70,14 @@ Interfaz:
 		Complejidad: Θ(1)
 		Descripción: Devuelve el precio de la lista buscada.
 		Aliasing: Devuelve una referencia no modificable
-		---			
+		---	
+		urgentes(in sl: sl) -> res: conj(string)
+		Pre ≡ {True}
+		Post ≡ {res =obs urgentes(sl)}
+		Complejidad: Θ(1)
+		Descripción: Devuelve un conjunto con todos los id que son urgentes
+		Aliasing: Devuelve una referencia no modificable
+		---	
 		newSession() -> res: sl
 		Pre ≡ {True}
 		Post ≡ {res =obs newSession()}
@@ -85,19 +93,26 @@ Interfaz:
 		Aliasing: No presenta aspectos de aliasing.
 		---	
 		newProduct(in p: product, in id:string, inout sl:sl)
-		Pre ≡ {id ∈ claves(sl.homeLists) ∨ id ∈ claves(sl.buyLists}
+		Pre ≡ {id ∈ claves(sl.homeLists) ∨ id ∈ claves(sl.buyLists)}
 		Post ≡ {res =obs addProduct(p,id,sl)}
 		Complejidad: Θ(1)
 		Descripción: Agrega un producto a la lista correspondiente
 		Aliasing: No presenta aspectos de aliasing.
 		---		
 		buyProduct(in p: product, in id:string, inout sl:sl)
-		Pre ≡ {id ∈ claves(sl.buyLists}
+		Pre ≡ {id ∈ claves(sl.buyLists)}
 		Post ≡ {res =obs buyProduct(p,id,sl)}
 		Complejidad: Θ(1)
 		Descripción: Agrega un producto a la lista correspondiente
 		Aliasing: No presenta aspectos de aliasing.
-		---			
+		---	
+		hacerUrgente(in id:string, inout sl:sl)
+		Pre ≡ {id ∈ claves(sl.buyLists)}
+		Post ≡ {res =obs hacerUrgente(id,sl)}
+		Complejidad: Θ(1)
+		Descripción: Hace/Desache una lista urgente
+		Aliasing: No presenta aspectos de aliasing.
+		---		
 	Algoritmos del módulo:
 		iBuyLists(in sl: sl) -> res: dicc(string,⟨list: conj(Product), price: nat⟩)
 			res ← sl.buyLists
@@ -134,7 +149,7 @@ Interfaz:
 				list ← obtener(id,sl.buyLists)
 			else if (def?(id,sl.homeLists)) then
 				list ← obtener(id,sl.homeLists)
-			fi 
+			fi
 			
 			if (def?(p.name,list)) then
 				product prod ← obtener(p.name,list)
@@ -163,5 +178,14 @@ Interfaz:
 			else
 				definir(p.name,p,list)
 		---
+		iHacerUrgente(in id: string, in sl:sl)
+			if (pertenece?(id,sl.urgentes)) then
+				eliminar(id,sl.urgentes)
+			else
+				agregar(id,sl.urgentes)
+			fi
+		---
+		
+		
 		
 		

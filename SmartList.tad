@@ -13,55 +13,88 @@ TAD SmartList
 		homeLists: sl -> dicc(string,secu(product))
 		homeList: string id x sl -> secu(product)		{id ∈ claves(homeLists(sl))}
 		listPrice: string id x sl -> nat 				{id ∈ claves(buyLists(sl))}
+		urgentes: sl -> conj(string)
 	Generadores:
 		newSession: -> sl
 		newList: string id x string t x sl -> sl		{(t = "buy" ∧ id ∉ claves(buyList(sl))) ∨ (t = "home" ∧ id ∉ claves(homeLists(sl)))}
 		newProduct: product x string id x sl -> sl 		{id ∈ claves(homeLists(sl)) ∨ id ∈ claves(buyLists(sl))}
 		buyProduct: product x string id x sl -> sl 		{id ∈ claves(buyLists(sl))}
+		hacerUrgente: string id x sl -> sl				{id ∈ claves(buyLists(sl))}
 	Otras Operaciones:
 		removeProduct: product x secu(product) -> secu(product)
 		addProduct: product x secu(product) -> secu(product)
+		eliminar: α x conj(α) -> conj(α)
 	Axiomas:
 		buyLists(newSession()) 			≡ vacio
 		buyLists(newList(id,t,sl)) 		≡ if t = "buy" then definir(id,vacia,buyLists(sl)) else buyLists(sl) fi
 		buyLists(newProduct(p,id2,sl)) 	≡ buyLists(sl)
-		buyLists(buyProduct(p,id2,sl)) 	≡ buyLists(sl)
+		buyLists(buyProduct(p,id,sl)) 	≡ buyLists(sl)
+		buyLists(hacerUrgente(id,sl)) 	≡ buyLists(sl)
 	
 		buyList(id1,newList(id2,t,sl)) 	  ≡ if id1 = id2 then vacia else buyList(id1,sl) fi
 		buyList(id1,newProduct(p,id2,sl)) ≡ if id1 = id2 then p • buyList(id1,sl) else buyList(id1,sl) fi
 		buyList(id1,buyProduct(p,id2,sl)) ≡ if id1 = id2 then removeProduct(p,buyList(id1,sl)) else buyList(id1,sl) fi
+		buyList(id1,hacerUrgente(id2,sl)  ≡ buyList(id1,sl)
 		
 		homeLists(newSession()) 		≡ vacio
 		homeLists(newList(id,t,sl)) 	≡ if t = "home" then definir(id,vacia,homeLists(sl)) else homeLists(sl) fi
 		homeLists(newProduct(p,id2,sl)) ≡ homeLists(sl)
 		homeLists(buyProduct(p,id2,sl)) ≡ homeLists(sl)
+		homeLists(hacerUrgente(id,sl)) 	≡ homeLists(sl)
 		
 		homeList(id1,newList(id2,t,sl)) 	≡ if id1 = id2 then vacia else homeList(id1,sl) fi
 		homeList(id1,newProduct(p,id2,sl)) 	≡ if id1 = id2 then addProduct(p,homeList(id1,sl)) else homeList(id1,sl) fi
 		homeList(id1,buyProduct(p,id2,sl)) 	≡ if id1 = id2 then addProduct(p,homeList(id1,sl)) else homeList(id1,sl) fi
+		homeList(id1,hacerUrgente(id2,sl)) 	≡ homeList(sl)
 		
 		listPrice(id1,newList(id2,t,sl)) 	≡ if id1 = id2 then 0 else listPrice(id1,sl) fi
 		listPrice(id1,newProduct(p,id2,sl)) ≡ if id1 = id2 then listPrice(id1,sl) + π3(p) else listPrice(id1,sl) fi
 		listPrice(id1,buyProduct(p,id2,sl)) ≡ listPrice(id1,sl)
+		listPrice(id1,hacerUrgente(id2,sl)) ≡ listPrice(id1,sl)
+		
+		urgentes(newSession()) 			≡ vacio
+		urgentes(newList(id,t,sl)) 		≡ urgentes(sl)
+		urgentes(newProduct(p,id2,sl)) 	≡ urgentes(sl)
+		urgentes(buyProduct(p,id2,sl)) 	≡ urgentes(sl)
+		urgentes(hacerUrgente(id,sl))	≡ if id ∈ urgentes(sl) then 
+												eliminar(id,urgentes(sl))
+										  else 
+										  		Ag(id,urgentes(sl))
+										  fi
 		
 		// Otras operacines
 		
-		removeProduct(p,s) ≡ if vacía?(s) 
-								then <>
-								else if π1(prim(s)) = π1(p) 
-										then if π3(prim(s)) = π3(p) 
-												then removeProduct(p,fin(s)) 
-												else ⟨ π1(p), π2(p), π3(prim(s)) - π3(p)⟩ • removeProduct(p,fin(s)) fi
-										else prim(s) • removeProduct(p,fin(s)) fi
+		eliminar(a,c) ≡ if Ø?(c) then
+							ø
+						else
+							if dameUno(c) = a then eliminar(a,sinUno(c)) else Ag(dameUno(c),eliminar(a,sinUno(c))) fi
+						fi
+						
+		removeProduct(p,s) ≡ if vacía?(s) then
+								<>
+							 else 
+							 	if π1(prim(s)) = π1(p) then 
+									if π3(prim(s)) = π3(p) then
+										removeProduct(p,fin(s)) 
+									else 
+										⟨ π1(p), π2(p), π3(prim(s)) - π3(p)⟩ • removeProduct(p,fin(s)) 
+									fi
+								else 
+									prim(s) • removeProduct(p,fin(s)) 
+								fi
 							 fi
 							 
-		 addProduct(p,s) ≡ if está?(p,s) 
-		 					then if vacía?(s) 
-									then <>
-									else if π1(prim(s)) = π1(p) 
-											then ⟨ π1(p), π2(p), π3(prim(s)) + π3(p)⟩ • addProduct(p,fin(s))
-											else prim(s) • addProduct(p,fin(s)) fi
-								 fi	 
-							else p • s
+		 addProduct(p,s) ≡ if está?(p,s) then 
+		 						if vacía?(s) then
+									 <>
+								else 
+									if π1(prim(s)) = π1(p) then
+										⟨ π1(p), π2(p), π3(prim(s)) + π3(p)⟩ • addProduct(p,fin(s))
+									else 
+										prim(s) • addProduct(p,fin(s)) 
+									fi
+								fi	 
+							else 
+								p • s
 						   fi
 Fin TAD
