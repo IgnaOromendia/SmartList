@@ -2,7 +2,10 @@ TAD Product ES Tupla⟨name: String, amount: Nat, pirce: Nat⟩
 TAD List ES Tupla⟨id: String, price: Nat, list: conj(Product)⟩
 
 TAD SmartList
-	Igualdad Observacional:();
+	Igualdad Observacional:(∀sl1,sl2:sl)(sl1 =obs sl2 ⇐⇒ (buyLists(sl1) =obs buyLists(sl2) ∧ homeLists(sl1) =obs homeLists(sl2)) ∧L 
+											(∀id:string)(id ∈ buyLists(sl1) ⇒L buyList(id,sl1) =obs buyList(id,sl2) ∧ listPrice(id,sl1) =obs listPrice(id,sl2)) ∧
+											(∀id:string)(id ∈ homeLists(sl1) ⇒L homeList(id,sl1) =obs homeList(id,sl2) ∧ listPrice(id,sl1) =obs listPrice(id,sl2)) ∧
+											urgentes(sl1) =obs urgentes(sl2));
 	Géneros: sl
 	Exporta: sl, observadores, generadores, 
 	Usa: Bool, Nat
