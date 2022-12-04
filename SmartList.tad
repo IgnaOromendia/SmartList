@@ -16,7 +16,7 @@ TAD SmartList
 	Generadores:
 		newSession: -> sl
 		newList: string id x string t x sl -> sl		{(t = "buy" ∧ id ∉ claves(buyList(sl))) ∨ (t = "home" ∧ id ∉ claves(homeLists(sl)))}
-		addProduct: product x string id x sl -> sl 		{id ∈ claves(homeLists(sl)) ∨ id ∈ claves(buyLists(sl))}
+		newProduct: product x string id x sl -> sl 		{id ∈ claves(homeLists(sl)) ∨ id ∈ claves(buyLists(sl))}
 		buyProduct: product x string id x sl -> sl 		{id ∈ claves(buyLists(sl))}
 	Otras Operaciones:
 		removeProduct: product x secu(product) -> secu(product)
@@ -24,24 +24,24 @@ TAD SmartList
 	Axiomas:
 		buyLists(newSession()) 			≡ vacio
 		buyLists(newList(id,t,sl)) 		≡ if t = "buy" then definir(id,vacia,buyLists(sl)) else buyLists(sl) fi
-		buyLists(addProduct(p,id2,sl)) 	≡ buyLists(sl)
+		buyLists(newProduct(p,id2,sl)) 	≡ buyLists(sl)
 		buyLists(buyProduct(p,id2,sl)) 	≡ buyLists(sl)
 	
 		buyList(id1,newList(id2,t,sl)) 	  ≡ if id1 = id2 then vacia else buyList(id1,sl) fi
-		buyList(id1,addProduct(p,id2,sl)) ≡ if id1 = id2 then p • buyList(id1,sl) else buyList(id1,sl) fi
+		buyList(id1,newProduct(p,id2,sl)) ≡ if id1 = id2 then p • buyList(id1,sl) else buyList(id1,sl) fi
 		buyList(id1,buyProduct(p,id2,sl)) ≡ if id1 = id2 then removeProduct(p,buyList(id1,sl)) else buyList(id1,sl) fi
 		
 		homeLists(newSession()) 		≡ vacio
 		homeLists(newList(id,t,sl)) 	≡ if t = "home" then definir(id,vacia,homeLists(sl)) else homeLists(sl) fi
-		homeLists(addProduct(p,id2,sl)) ≡ homeLists(sl)
+		homeLists(newProduct(p,id2,sl)) ≡ homeLists(sl)
 		homeLists(buyProduct(p,id2,sl)) ≡ homeLists(sl)
 		
 		homeList(id1,newList(id2,t,sl)) 	≡ if id1 = id2 then vacia else homeList(id1,sl) fi
-		homeList(id1,addProduct(p,id2,sl)) 	≡ if id1 = id2 then addProduct(p,homeList(id1,sl)) else homeList(id1,sl) fi
+		homeList(id1,newProduct(p,id2,sl)) 	≡ if id1 = id2 then addProduct(p,homeList(id1,sl)) else homeList(id1,sl) fi
 		homeList(id1,buyProduct(p,id2,sl)) 	≡ if id1 = id2 then addProduct(p,homeList(id1,sl)) else homeList(id1,sl) fi
 		
 		listPrice(id1,newList(id2,t,sl)) 	≡ if id1 = id2 then 0 else listPrice(id1,sl) fi
-		listPrice(id1,addProduct(p,id2,sl)) ≡ if id1 = id2 then listPrice(id1,sl) + π3(p) else listPrice(id1,sl) fi
+		listPrice(id1,newProduct(p,id2,sl)) ≡ if id1 = id2 then listPrice(id1,sl) + π3(p) else listPrice(id1,sl) fi
 		listPrice(id1,buyProduct(p,id2,sl)) ≡ listPrice(id1,sl)
 		
 		// Otras operacines
