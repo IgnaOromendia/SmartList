@@ -7,12 +7,30 @@
 
 import Foundation
 
+class ListData: Equatable {
+    var list: Dictionary<String,Product>
+    var price: Int
+    
+    init(list: Dictionary<String,Product>, price: Int) {
+        self.list = list
+        self.price = price
+    }
+    
+    convenience init() {
+        self.init(list: [:], price: 0)
+    }
+    
+    static func == (lhs: ListData, rhs: ListData) -> Bool {
+        return lhs.list == lhs.list && rhs.price == rhs.price
+    }
+}
+
 class ListManager {
     private var homeLists: Dictionary<String, ListData>
     private var buyLists: Dictionary<String, ListData>
     private var urgents: Set<String>
     
-    init(homeLists: Dictionary<String, (list: Dictionary<String, Product>, price: Int)>, buyLists: Dictionary<String, (list: Dictionary<String, Product>, price: Int)>, urgents: Set<String>) {
+    init(homeLists: Dictionary<String, ListData>, buyLists: Dictionary<String, ListData>, urgents: Set<String>) {
         self.homeLists = homeLists
         self.buyLists = buyLists
         self.urgents = urgents
@@ -48,9 +66,8 @@ class ListManager {
     func getListPrice(id: String) -> Int {
         if let list = buyLists[id] {
             return list.price
-        } else {
-            return -1
         }
+        return -1
     }
     
     /// Returns the urgents ids
@@ -67,17 +84,17 @@ class ListManager {
     
     /// Creates a new list
     func newList(id: String, type: ListType) throws {
-        try validateNewList(id: id, type: type)
+        try validateNewList(id: id)
         if type == .Buy {
-            self.buyLists.updateValue(([:],0), forKey: id)
+            self.buyLists.updateValue(ListData(), forKey: id)
         } else {
-            self.homeLists.updateValue(([:],0), forKey: id)
+            self.homeLists.updateValue(ListData(), forKey: id)
         }
     }
     
     /// Add a new product to a list
     func newProduct(_ p: Product, id: String) throws {
-        var listData: ListData = ([:],0)
+        var listData = ListData()
         
         // Verifying
         
@@ -94,7 +111,7 @@ class ListManager {
         listData.price += (p.amount * p.price)
         
         if listData.list.keys.contains(p.name) {
-            var prod = listData.list[p.name]!
+            let prod = listData.list[p.name]!
             prod.amount += p.amount
             listData.list.updateValue(prod, forKey: prod.name)
         } else {
@@ -112,7 +129,7 @@ class ListManager {
     
     /// Remove a product from a buying list
     func buyProduct(_ p: Product, idB: String, idH: String) throws {
-        var listData: ListData = ([:],0)
+        var listData = ListData()
         var prod = Product()
         
         // I have to modify the buying list removing the product or reducing the amount of it
@@ -172,6 +189,7 @@ class ListManager {
         self.homeLists.updateValue(listData, forKey: idH)
     }
     
+    /// Add/Remove to the urgent set a list
     func makeUrgent(id: String) {
         if self.isUrgent(id: id) {
             self.urgents.remove(id)
@@ -183,12 +201,8 @@ class ListManager {
     
     // MARK: - PRIVATE
     
-    private func validateNewList(id: String, type: ListType) throws {
-        if type == .Buy {
-            guard self.buyLists.keys.contains(id) else { throw ListErrors.alreadyAdded }
-        } else {
-            guard self.buyLists.keys.contains(id) else { throw ListErrors.alreadyAdded }
-        }
+    private func validateNewList(id: String) throws {
+        guard !self.buyLists.keys.contains(id) else { throw ListErrors.alreadyAdded }
+        guard !self.homeLists.keys.contains(id) else { throw ListErrors.alreadyAdded }
     }
-    
 }

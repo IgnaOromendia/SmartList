@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Product {
+class Product: Equatable {
     let name: String
     let price: Int
     var amount: Int
@@ -20,6 +20,10 @@ class Product {
     
     convenience init() {
         self.init(name: "", price: 0, amount: 0)
+    }
+    
+    static func == (lhs: Product, rhs: Product) -> Bool {
+        return lhs.price == rhs.price && lhs.name == rhs.name && lhs.amount == rhs.amount
     }
     
 }

@@ -7,8 +7,6 @@
 
 import Foundation
 
-typealias ListData = (list: Dictionary<String,Product>, price: Int)
-
 enum ListType {
     case Buy
     case Home
