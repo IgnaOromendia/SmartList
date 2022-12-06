@@ -29,15 +29,17 @@ class ListManager {
     private var homeLists: Dictionary<String, ListData>
     private var buyLists: Dictionary<String, ListData>
     private var urgents: Set<String>
+    private var startingLists: StartingLists
     
-    init(homeLists: Dictionary<String, ListData>, buyLists: Dictionary<String, ListData>, urgents: Set<String>) {
+    init(homeLists: Dictionary<String, ListData>, buyLists: Dictionary<String, ListData>, urgents: Set<String>, startingLists: StartingLists) {
         self.homeLists = homeLists
         self.buyLists = buyLists
         self.urgents = urgents
+        self.startingLists = startingLists
     }
     
     convenience init() {
-        self.init(homeLists: [:], buyLists: [:], urgents: [])
+        self.init(homeLists: [:], buyLists: [:], urgents: [], startingLists: ("",""))
     }
     
     // MARK: - GET
@@ -80,14 +82,25 @@ class ListManager {
         return self.urgents.contains(id)
     }
     
+    /// Returns the lists that are set to be the first ones in appear
+    func getStartingLists() -> StartingLists {
+        return self.startingLists
+    }
+    
     // MARK: - SET
     
     /// Creates a new list
     func newList(id: String, type: ListType) throws {
         try validateNewList(id: id)
         if type == .Buy {
+            if self.buyLists.isEmpty {
+                startingLists.buyList = id
+            }
             self.buyLists.updateValue(ListData(), forKey: id)
         } else {
+            if self.homeLists.isEmpty {
+                startingLists.homeList = id
+            }
             self.homeLists.updateValue(ListData(), forKey: id)
         }
     }
@@ -198,6 +211,10 @@ class ListManager {
         }
     }
     
+    /// Set New starting lists
+    func setStartingList(_ stl: StartingLists) {
+        self.startingLists = stl
+    }
     
     // MARK: - PRIVATE
     

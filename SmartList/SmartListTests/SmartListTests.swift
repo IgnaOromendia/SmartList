@@ -174,7 +174,7 @@ final class ListManagerTests: XCTestCase {
         XCTAssertThrowsError(try listManager.buyProduct(product1, idB: listID1, idH: listID2))
     }
     
-    func test_UrgentList() {
+    func test_urgentList() {
         do {
             try listManager.newList(id: listID1, type: .Buy)
             try listManager.newList(id: listID2, type: .Home)
@@ -194,7 +194,23 @@ final class ListManagerTests: XCTestCase {
         listManager.makeUrgent(id: listID2)
         
         XCTAssert(listManager.getUrgents().isEmpty)
+    }
+    
+    func test_startingLists() {
+        do {
+            try listManager.newList(id: listID1, type: .Buy)
+            try listManager.newList(id: listID2, type: .Home)
+            try listManager.newList(id: "sB", type: .Buy)
+            try listManager.newList(id: "sH", type: .Home)
+        } catch {
+            print(error.localizedDescription)
+        }
         
+        XCTAssert(listManager.getStartingLists() == (listID1,listID2))
+        
+        listManager.setStartingList(("sb","sH"))
+        
+        XCTAssert(listManager.getStartingLists() == ("sb","sH"))
     }
 
 }

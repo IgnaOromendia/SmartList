@@ -7,6 +7,10 @@
 
 import Foundation
 
+// Alias
+
+typealias StartingLists = (buyList: String, homeList: String)
+
 // Types
 
 enum ListType {
