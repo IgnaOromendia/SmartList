@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		703C388A293E667000F542D2 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703C3889293E667000F542D2 /* Global.swift */; };
+		703C388B293E667000F542D2 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703C3889293E667000F542D2 /* Global.swift */; };
+		703C388D293E668000F542D2 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703C388C293E668000F542D2 /* Constant.swift */; };
+		703C388E293E668000F542D2 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703C388C293E668000F542D2 /* Constant.swift */; };
 		70CD67D3293E530000578EA8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CD67D2293E530000578EA8 /* AppDelegate.swift */; };
 		70CD67D5293E530000578EA8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CD67D4293E530000578EA8 /* SceneDelegate.swift */; };
 		70CD67DA293E530100578EA8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70CD67D8293E530100578EA8 /* Main.storyboard */; };
@@ -15,6 +19,10 @@
 		70CD67EA293E530300578EA8 /* SmartListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CD67E9293E530300578EA8 /* SmartListTests.swift */; };
 		70CD67F4293E530300578EA8 /* SmartListUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CD67F3293E530300578EA8 /* SmartListUITests.swift */; };
 		70CD67F6293E530300578EA8 /* SmartListUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CD67F5293E530300578EA8 /* SmartListUITestsLaunchTests.swift */; };
+		70CD6809293E634B00578EA8 /* ListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CD6808293E634B00578EA8 /* ListManager.swift */; };
+		70CD680A293E634B00578EA8 /* ListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CD6808293E634B00578EA8 /* ListManager.swift */; };
+		70FEAB3F293F80FD000C1D10 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FEAB3E293F80FD000C1D10 /* Product.swift */; };
+		70FEAB40293F80FD000C1D10 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FEAB3E293F80FD000C1D10 /* Product.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		703C3889293E667000F542D2 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		703C388C293E668000F542D2 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		70CD67CF293E530000578EA8 /* SmartList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70CD67D2293E530000578EA8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		70CD67D4293E530000578EA8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +57,8 @@
 		70CD67EF293E530300578EA8 /* SmartListUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmartListUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		70CD67F3293E530300578EA8 /* SmartListUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartListUITests.swift; sourceTree = "<group>"; };
 		70CD67F5293E530300578EA8 /* SmartListUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartListUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		70CD6808293E634B00578EA8 /* ListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListManager.swift; sourceTree = "<group>"; };
+		70FEAB3E293F80FD000C1D10 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,11 +110,11 @@
 			isa = PBXGroup;
 			children = (
 				70CD6802293E540F00578EA8 /* Delegates */,
+				70CD6807293E55F600578EA8 /* Utilities */,
 				70CD6803293E558F00578EA8 /* Models */,
 				70CD6804293E559F00578EA8 /* ViewModels */,
 				70CD6805293E55B000578EA8 /* Views */,
 				70CD6806293E55C600578EA8 /* Controllers */,
-				70CD6807293E55F600578EA8 /* Utilities */,
 				70CD67D8293E530100578EA8 /* Main.storyboard */,
 				70CD67DB293E530300578EA8 /* Assets.xcassets */,
 				70CD67DD293E530300578EA8 /* LaunchScreen.storyboard */,
@@ -140,6 +152,8 @@
 		70CD6803293E558F00578EA8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				70FEAB3E293F80FD000C1D10 /* Product.swift */,
+				70CD6808293E634B00578EA8 /* ListManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -168,6 +182,8 @@
 		70CD6807293E55F600578EA8 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				703C3889293E667000F542D2 /* Global.swift */,
+				703C388C293E668000F542D2 /* Constant.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -303,8 +319,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				703C388A293E667000F542D2 /* Global.swift in Sources */,
 				70CD67D3293E530000578EA8 /* AppDelegate.swift in Sources */,
+				703C388D293E668000F542D2 /* Constant.swift in Sources */,
+				70CD6809293E634B00578EA8 /* ListManager.swift in Sources */,
 				70CD67D5293E530000578EA8 /* SceneDelegate.swift in Sources */,
+				70FEAB3F293F80FD000C1D10 /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +333,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				70CD67EA293E530300578EA8 /* SmartListTests.swift in Sources */,
+				70CD680A293E634B00578EA8 /* ListManager.swift in Sources */,
+				70FEAB40293F80FD000C1D10 /* Product.swift in Sources */,
+				703C388B293E667000F542D2 /* Global.swift in Sources */,
+				703C388E293E668000F542D2 /* Constant.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
