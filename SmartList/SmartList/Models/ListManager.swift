@@ -173,7 +173,11 @@ class ListManager {
     }
     
     func makeUrgent(id: String) {
-        
+        if self.isUrgent(id: id) {
+            self.urgents.remove(id)
+        } else {
+            self.urgents.insert(id)
+        }
     }
     
     
