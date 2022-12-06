@@ -166,24 +166,34 @@ Interfaz:
 			fi
 			
 		---
-		iBuyProduct(in p: product, in id:string, inout sl:sl)
-			dicc(string,product) list ← obtener(id,sl.buyLists)
-			product prod ← obtener(p.name,list)
+		iBuyProduct(in p: product, in idB:string, in idH: String, inout sl:sl)
+			⟨ diccHash(string,Product), nat⟩ listData ← obtener(idB,sl.buyLists)
+			
+			listData.price -= p.amount * p.price
+			
+			product prod ← obtener(p.name,listData.list)
 			prod.amount -= p.amount
 			
 			if prod.amount = 0 then
-				eliminar(p.name,list)
+				eliminar(p.name,listData.list)
 			else
-				definir(prod.name,prod,list)
+				definir(prod.name,prod,listData.list)
 			fi
 			
-			list ← obtener(id,sl.homeLists)
+			definir(idB,listData,sl.buyLists)
+			
+			listData ← obtener(idH,sl.homeLists)
+			listData.price += p.amount * p.price
+			
 			if (def?(p.name,list)) then
-				prod ← obtener(p.name,list)
+				prod ← obtener(p.name,listData.list)
 				prod.amount += p.amount
-				definir(prod.name,p,list)
+				definir(prod.name,p,listData.list)
 			else
-				definir(p.name,p,list)
+				definir(p.name,p,listData.list)
+			fi
+			
+			definir(idH,listData,sl.homeLists)
 		---
 		iHacerUrgente(in id: string, in sl:sl)
 			if (pertenece?(id,sl.urgentes)) then
