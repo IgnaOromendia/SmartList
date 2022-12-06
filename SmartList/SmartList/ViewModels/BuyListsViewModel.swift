@@ -61,6 +61,15 @@ final class BuyListsViewModel {
     
     // Set
     
-    
+    func fillWithData(title: String, with data: ListData) {
+        self.title = title
+        self.price = "$\(data.price)"
+        self.list = data.list
+        self.listArray = []
+        
+        for prod in self.list {
+            self.listArray.append(prod.value)
+        }
+    }
     
 }

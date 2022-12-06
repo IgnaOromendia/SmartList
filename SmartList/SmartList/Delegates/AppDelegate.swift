@@ -7,7 +7,7 @@
 
 import UIKit
 
-var listManager = ListManager()
+var listM = ListManager()
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
