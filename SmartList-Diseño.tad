@@ -141,23 +141,30 @@ Interfaz:
 			fi
 		---
 		iNewProduct(in p: product, in id:string, inout sl:sl)
-			// Aca todo se pasa por referencia asi que no hay que volver a definir 
-			// en el de la estructura, a menos que sea algo nuevo
-			dicc(string,product) list ← vacio()
+			⟨ diccHash(string,Product), nat⟩ listData ← (vacio(),0)
 			
 			if (def?(id,sl.buyLists)) then
-				list ← obtener(id,sl.buyLists)
+				listData ← obtener(id,sl.buyLists)
 			else if (def?(id,sl.homeLists)) then
-				list ← obtener(id,sl.homeLists)
+				listData ← obtener(id,sl.homeLists)
 			fi
 			
+			listData.price += p.amount * p.price
+			
 			if (def?(p.name,list)) then
-				product prod ← obtener(p.name,list)
+				product prod ← obtener(p.name,listData.list)
 				prod.amount += p.amount
-				definir(prod.name,p,list)
+				definir(prod.name,p,listData.list)
 			else
-				definir(p.name,p,list)
+				definir(p.name,p,listData.list)
 			fi
+			
+			if (def?(id,sl.buyLists)) then
+				definir(id,listData,sl.buyLists)
+			else if (def?(id,sl.homeLists)) then
+				definir(id,listData,sl.homeLists)
+			fi
+			
 		---
 		iBuyProduct(in p: product, in id:string, inout sl:sl)
 			dicc(string,product) list ← obtener(id,sl.buyLists)
