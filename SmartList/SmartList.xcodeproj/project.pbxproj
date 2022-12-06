@@ -23,6 +23,12 @@
 		70CD680A293E634B00578EA8 /* ListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CD6808293E634B00578EA8 /* ListManager.swift */; };
 		70FEAB3F293F80FD000C1D10 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FEAB3E293F80FD000C1D10 /* Product.swift */; };
 		70FEAB40293F80FD000C1D10 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FEAB3E293F80FD000C1D10 /* Product.swift */; };
+		70FEAB48293FD38E000C1D10 /* HomeListsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FEAB47293FD38E000C1D10 /* HomeListsController.swift */; };
+		70FEAB49293FD38E000C1D10 /* HomeListsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FEAB47293FD38E000C1D10 /* HomeListsController.swift */; };
+		70FEAB4B293FD419000C1D10 /* BuyListsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FEAB4A293FD419000C1D10 /* BuyListsViewModel.swift */; };
+		70FEAB4C293FD419000C1D10 /* BuyListsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FEAB4A293FD419000C1D10 /* BuyListsViewModel.swift */; };
+		70FEAB4E293FD447000C1D10 /* BuyListsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FEAB4D293FD447000C1D10 /* BuyListsController.swift */; };
+		70FEAB4F293FD447000C1D10 /* BuyListsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FEAB4D293FD447000C1D10 /* BuyListsController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +65,9 @@
 		70CD67F5293E530300578EA8 /* SmartListUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartListUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		70CD6808293E634B00578EA8 /* ListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListManager.swift; sourceTree = "<group>"; };
 		70FEAB3E293F80FD000C1D10 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		70FEAB47293FD38E000C1D10 /* HomeListsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListsController.swift; sourceTree = "<group>"; };
+		70FEAB4A293FD419000C1D10 /* BuyListsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyListsViewModel.swift; sourceTree = "<group>"; };
+		70FEAB4D293FD447000C1D10 /* BuyListsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyListsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +170,7 @@
 		70CD6804293E559F00578EA8 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				70FEAB4A293FD419000C1D10 /* BuyListsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -175,6 +185,8 @@
 		70CD6806293E55C600578EA8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				70FEAB47293FD38E000C1D10 /* HomeListsController.swift */,
+				70FEAB4D293FD447000C1D10 /* BuyListsController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -319,11 +331,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70FEAB4E293FD447000C1D10 /* BuyListsController.swift in Sources */,
+				70FEAB48293FD38E000C1D10 /* HomeListsController.swift in Sources */,
 				703C388A293E667000F542D2 /* Global.swift in Sources */,
 				70CD67D3293E530000578EA8 /* AppDelegate.swift in Sources */,
 				703C388D293E668000F542D2 /* Constant.swift in Sources */,
 				70CD6809293E634B00578EA8 /* ListManager.swift in Sources */,
 				70CD67D5293E530000578EA8 /* SceneDelegate.swift in Sources */,
+				70FEAB4B293FD419000C1D10 /* BuyListsViewModel.swift in Sources */,
 				70FEAB3F293F80FD000C1D10 /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,10 +347,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70FEAB49293FD38E000C1D10 /* HomeListsController.swift in Sources */,
 				70CD67EA293E530300578EA8 /* SmartListTests.swift in Sources */,
 				70CD680A293E634B00578EA8 /* ListManager.swift in Sources */,
 				70FEAB40293F80FD000C1D10 /* Product.swift in Sources */,
+				70FEAB4C293FD419000C1D10 /* BuyListsViewModel.swift in Sources */,
 				703C388B293E667000F542D2 /* Global.swift in Sources */,
+				70FEAB4F293FD447000C1D10 /* BuyListsController.swift in Sources */,
 				703C388E293E668000F542D2 /* Constant.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
